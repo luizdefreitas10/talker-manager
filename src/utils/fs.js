@@ -13,15 +13,17 @@ const fsReadFile = async () => {
   }
 };
 
-// const readTalkerFile = async () => {
-//   try {
-//     const talker = JSON.parse(await fs.readFile(pathTalker));
-//     return talker;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+const fsReadFileById = async (id) => {
+  try {
+    const response = await fsReadFile();
+    const talkerId = response.find((talker) => talker.id === Number(id));
+    return talkerId;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = {
   fsReadFile,
+  fsReadFileById,
 };

@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { fsReadFile } = require('../utils/fs');
+const { fsReadFile, fsReadFileById } = require('../utils/fs');
 
 const router = express.Router();
 router.use(express.json());
@@ -9,6 +9,16 @@ router.use(express.json());
 router.get('/', async (_req, res) => {
   const talkerManager = await fsReadFile();
   return res.status(200).json(talkerManager);
+});
+
+// 2 
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  const talkerId = await fsReadFileById(id);
+  if (talkerId) {
+    return res.status(200).json(talkerId);
+  }
+  return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
 module.exports = router;
