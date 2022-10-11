@@ -1,6 +1,15 @@
 const express = require('express');
 
-const { fsReadFile, fsReadFileById } = require('../utils/fs');
+const { fsReadFile, fsReadFileById, fsWriteFile } = require('../utils/fs');
+
+const { 
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  talkValidation,
+  watchedAtValidation,
+  rateValidation, 
+} = require('../middlewares/talkerValidation');
 
 const router = express.Router();
 router.use(express.json());
@@ -19,6 +28,20 @@ router.get('/:id', async (req, res) => {
     return res.status(200).json(talkerId);
   }
   return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+});
+
+// 5 
+
+router.post('/',
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  talkValidation,
+  watchedAtValidation,
+  rateValidation,
+  async (req, res) => {
+    const newTalker = await fsWriteFile(req.body);
+    return res.status(201).json(newTalker);
 });
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
+const anotherId = require('./generateId');
 
 const talkerPath = path.resolve(__dirname, '../talker.json');
 
@@ -23,7 +24,20 @@ const fsReadFileById = async (id) => {
   }
 };
 
+const fsWriteFile = async (talker) => {
+  try {
+    const response = await fsReadFile();
+    const anotherTalker = { ...talker, id: anotherId(response) };
+    const talkers = JSON.stringify([...response, anotherTalker]);
+    await fs.writeFile(talkerPath, talkers);
+    return anotherTalker;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   fsReadFile,
   fsReadFileById,
+  fsWriteFile,
 };
