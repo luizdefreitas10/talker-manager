@@ -1,6 +1,12 @@
 const express = require('express');
 
-const { fsReadFile, fsReadFileById, fsWriteFile, fsUpdateTalkerById, fsDeleteTalkerById } = require('../utils/fs');
+const {
+  fsReadFile,
+  fsReadFileById,
+  fsWriteFile,
+  fsUpdateTalkerById,
+  fsDeleteTalkerById,
+} = require('../utils/fs');
 
 const { 
   tokenValidation,
