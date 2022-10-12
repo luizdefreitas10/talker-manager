@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { fsReadFile, fsReadFileById, fsWriteFile } = require('../utils/fs');
+const { fsReadFile, fsReadFileById, fsWriteFile, fsUpdateTalkerById } = require('../utils/fs');
 
 const { 
   tokenValidation,
@@ -31,7 +31,6 @@ router.get('/:id', async (req, res) => {
 });
 
 // 5 
-
 router.post('/',
   tokenValidation,
   nameValidation,
@@ -43,5 +42,19 @@ router.post('/',
     const newTalker = await fsWriteFile(req.body);
     return res.status(201).json(newTalker);
 });
+
+// 6 
+router.put('/:id',
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  talkValidation,
+  watchedAtValidation,
+  rateValidation,
+  async (req, res) => {
+    const { id } = req.params;
+    const talker = await fsUpdateTalkerById(id, req.body);
+    return res.status(200).json(talker);
+  });
 
 module.exports = router;

@@ -36,8 +36,22 @@ const fsWriteFile = async (talker) => {
   }
 };
 
+const fsUpdateTalkerById = async (id, body) => {
+  try {
+    const response = await fsReadFile();
+    const data = response.findIndex((talker) => talker.id === Number(id));
+    response[data] = { id: Number(id), ...body };
+    const updatedData = response[data];
+    await fs.writeFile(talkerPath, JSON.stringify(response));
+    return updatedData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   fsReadFile,
   fsReadFileById,
   fsWriteFile,
+  fsUpdateTalkerById,
 };
