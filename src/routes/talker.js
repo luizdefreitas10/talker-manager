@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { fsReadFile, fsReadFileById, fsWriteFile, fsUpdateTalkerById } = require('../utils/fs');
+const { fsReadFile, fsReadFileById, fsWriteFile, fsUpdateTalkerById, fsDeleteTalkerById } = require('../utils/fs');
 
 const { 
   tokenValidation,
@@ -56,5 +56,12 @@ router.put('/:id',
     const talker = await fsUpdateTalkerById(id, req.body);
     return res.status(200).json(talker);
   });
+
+// 7 
+router.delete('/:id', tokenValidation, async (req, res) => {
+  const { id } = req.params;
+  await fsDeleteTalkerById(id);
+  return res.status(204).end();
+});
 
 module.exports = router;

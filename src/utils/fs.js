@@ -49,9 +49,21 @@ const fsUpdateTalkerById = async (id, body) => {
   }
 };
 
+const fsDeleteTalkerById = async (id) => {
+  try {
+    const response = await fsReadFile();
+    const data = response.filter((talker) => talker.id !== Number(id));
+    console.log(data);
+    await fs.writeFile(talkerPath, JSON.stringify(data));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   fsReadFile,
   fsReadFileById,
   fsWriteFile,
   fsUpdateTalkerById,
+  fsDeleteTalkerById,
 };
