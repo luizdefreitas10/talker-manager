@@ -6,6 +6,7 @@ const {
   fsWriteFile,
   fsUpdateTalkerById,
   fsDeleteTalkerById,
+  fsSearchTalker,
 } = require('../utils/fs');
 
 const { 
@@ -68,6 +69,13 @@ router.delete('/:id', tokenValidation, async (req, res) => {
   const { id } = req.params;
   await fsDeleteTalkerById(id);
   return res.status(204).end();
+});
+
+// 8 
+router.get('/search', tokenValidation, async (req, res) => {
+  const { q } = req.query;
+  const talker = await fsSearchTalker(q);
+  return res.status(200).json(talker);
 });
 
 module.exports = router;

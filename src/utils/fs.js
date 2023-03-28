@@ -2,13 +2,15 @@ const fs = require('fs').promises;
 const path = require('path');
 const anotherId = require('./generateId');
 
-const talkerPath = path.resolve(__dirname, '../talker.json');
+const talkerPath = path.resolve(__dirname, '..', 'talker.json');
 
 const fsReadFile = async () => {
   try {
-    const response = await fs.readFile(talkerPath);
-    const talkerManager = await JSON.parse(response);
-    return talkerManager;
+    const talker = JSON.parse(await fs.readFile(talkerPath));
+    return talker;
+    // const response = await fs.readFile(talkerPath);
+    // const talkerManager = await JSON.parse(response);
+    // return talkerManager;
   } catch (error) {
     console.log(error);
   }
@@ -53,8 +55,20 @@ const fsDeleteTalkerById = async (id) => {
   try {
     const response = await fsReadFile();
     const data = response.filter((talker) => talker.id !== Number(id));
-    console.log(data);
     await fs.writeFile(talkerPath, JSON.stringify(data));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const fsSearchTalker = async (query) => {
+  try {
+    const response = await fsReadFile();
+    if (!query) {
+      return response;
+    }
+    const talkers = response.filter((talker) => talker.name.includes(query));
+    return talkers;
   } catch (error) {
     console.log(error);
   }
@@ -66,4 +80,5 @@ module.exports = {
   fsWriteFile,
   fsUpdateTalkerById,
   fsDeleteTalkerById,
+  fsSearchTalker,
 };
